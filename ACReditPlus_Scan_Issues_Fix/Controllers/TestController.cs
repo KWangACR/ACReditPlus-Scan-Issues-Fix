@@ -30,8 +30,12 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 			//};
 			//return Json(searchModel, serializerSettings);
 
-			TestClass testClass = new TestClass { };
-			testClass.Name = searchModel.Name;
+			//TestClass testClass = new TestClass { };
+			//testClass.Name = searchModel.Name;
+			//return Json(testClass);
+
+			TestClass testClass = JsonConvert.DeserializeObject<TestClass>(JsonConvert.SerializeObject(searchModel));
+
 			return Json(testClass);
 		}
 
