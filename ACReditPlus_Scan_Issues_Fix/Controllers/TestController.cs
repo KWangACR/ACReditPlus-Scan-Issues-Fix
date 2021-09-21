@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACReditPlus_Scan_Issues_Fix.Controllers
 {
 	public class TestClass
 	{
-		public string Name { get; set; }
+		public int ID { get; set; }
+		//public string Name { get; set; }
 	}
 
 	public class TestController : Controller
