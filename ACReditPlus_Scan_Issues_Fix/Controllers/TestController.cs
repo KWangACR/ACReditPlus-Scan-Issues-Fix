@@ -10,8 +10,8 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 {
 	public class TestClass
 	{
-		public int ID { get; set; }
-		//public string Name { get; set; }
+		//public int ID { get; set; }
+		public string Name { get; set; }
 	}
 
 	public class TestController : Controller
@@ -31,7 +31,7 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 			//return Json(searchModel, serializerSettings);
 
 			TestClass testClass = new TestClass { };
-			testClass.ID = searchModel.ID;
+			testClass.Name = searchModel.Name;
 			return Json(testClass);
 		}
 
