@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Security.Application;
 using Newtonsoft.Json;
 
 namespace ACReditPlus_Scan_Issues_Fix.Controllers
@@ -34,7 +35,9 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 			//testClass.Name = searchModel.Name;
 			//return Json(testClass);
 
-			TestClass testClass = JsonConvert.DeserializeObject<TestClass>(JsonConvert.SerializeObject(searchModel));
+			//TestClass testClass = JsonConvert.DeserializeObject<TestClass>(JsonConvert.SerializeObject(searchModel));
+
+			TestClass testClass = JsonConvert.DeserializeObject<TestClass>(Sanitizer.GetSafeHtmlFragment(JsonConvert.SerializeObject(searchModel)));
 
 			return Json(testClass);
 		}
