@@ -24,11 +24,15 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		[HttpPost]
 		public ActionResult Test_1([FromBody] TestClass searchModel)
 		{
-			var serializerSettings = new JsonSerializerSettings()
-			{
-				StringEscapeHandling = StringEscapeHandling.EscapeHtml
-			};
-			return Json(searchModel, serializerSettings);
+			//var serializerSettings = new JsonSerializerSettings()
+			//{
+			//	StringEscapeHandling = StringEscapeHandling.EscapeHtml
+			//};
+			//return Json(searchModel, serializerSettings);
+
+			TestClass testClass = new TestClass { };
+			testClass.ID = searchModel.ID;
+			return Json(testClass);
 		}
 
 		[HttpPost]
