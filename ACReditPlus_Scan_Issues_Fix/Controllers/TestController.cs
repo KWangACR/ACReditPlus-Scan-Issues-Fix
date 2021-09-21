@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ACReditPlus_Scan_Issues_Fix.Controllers
 {
@@ -23,7 +24,11 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		[HttpPost]
 		public ActionResult Test_1([FromBody] TestClass searchModel)
 		{
-			return Json(searchModel);
+			var serializerSettings = new JsonSerializerSettings()
+			{
+				StringEscapeHandling = StringEscapeHandling.EscapeHtml
+			};
+			return Json(searchModel, serializerSettings);
 		}
 
 		[HttpPost]
