@@ -19,9 +19,15 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult FilteredReviewerFeedbackList([FromBody] TestClass searchModel)
+		public ActionResult Test_1([FromBody] TestClass searchModel)
 		{
 			return Json(searchModel);
+		}
+
+		[HttpPost]
+		public TestClass Test_2([FromBody] TestClass searchModel)
+		{
+			return searchModel;
 		}
 	}
 }
