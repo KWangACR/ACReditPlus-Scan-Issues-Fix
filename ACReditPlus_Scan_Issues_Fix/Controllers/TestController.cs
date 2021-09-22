@@ -43,21 +43,19 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		//	return Json(testClass);
 		//}
 
-		//[HttpPost]
-		//public ActionResult Test_2([FromBody] TestClass searchModel)
-		//{
-		//	// return Sanitizer.GetSafeHtml(JsonConvert.SerializeObject(searchModel));
-		//	// return JsonConvert.SerializeObject(searchModel);
-
-		//	searchModel.Name = Sanitizer.GetSafeHtmlFragment(searchModel.Name);
-		//	return Json(searchModel);
-		//}
-
 		[HttpPost]
-		[SanitizeInput]
-		public ActionResult Test_3([FromBody] TestClass searchModel)
+		public ActionResult Test_2([FromBody] TestClass searchModel)
 		{
+			var sanitizer = new HtmlSanitizer();
+			searchModel.Name = sanitizer.Sanitize(searchModel.Name);
 			return Json(searchModel);
 		}
+
+		//[HttpPost]
+		//[SanitizeInput]
+		//public ActionResult Test_3([FromBody] TestClass searchModel)
+		//{
+		//	return Json(searchModel);
+		//}
 	}
 }

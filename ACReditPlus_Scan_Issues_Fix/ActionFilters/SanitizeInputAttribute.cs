@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ACReditPlus_Scan_Issues_Fix.ActionFilters
 {
+	// Sanitize api input (for string properties only):
 	public class SanitizeInputAttribute : ActionFilterAttribute
 	{
 		public override void OnActionExecuting(ActionExecutingContext context)
