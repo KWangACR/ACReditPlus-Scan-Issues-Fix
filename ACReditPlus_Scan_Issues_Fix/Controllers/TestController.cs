@@ -5,17 +5,12 @@ using System.Threading.Tasks;
 using System.Web;
 using Ganss.XSS;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Security.Application;
 using Newtonsoft.Json;
 using ACReditPlus_Scan_Issues_Fix.ActionFilters;
+using ACReditPlus_Scan_Issues_Fix.Models;
 
 namespace ACReditPlus_Scan_Issues_Fix.Controllers
 {
-	public class TestClass
-	{
-		public string Name { get; set; }
-	}
-
 	public class TestController : Controller
 	{
 		public IActionResult Index()
@@ -23,39 +18,21 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 			return View();
 		}
 
-		//[HttpPost]
-		//public ActionResult Test_1([FromBody] TestClass searchModel)
-		//{
-		//	//var serializerSettings = new JsonSerializerSettings()
-		//	//{
-		//	//	StringEscapeHandling = StringEscapeHandling.EscapeHtml
-		//	//};
-		//	//return Json(searchModel, serializerSettings);
-
-		//	//TestClass testClass = new TestClass { };
-		//	//testClass.Name = searchModel.Name;
-		//	//return Json(testClass);
-
-
-		//	// <a>malicious link</a>
-		//	TestClass testClass = JsonConvert.DeserializeObject<TestClass>(Sanitizer.GetSafeHtmlFragment(JsonConvert.SerializeObject(searchModel)));
-
-		//	return Json(testClass);
-		//}
-
+		// Dirty fix (accepted by Checkmarx):
 		[HttpPost]
-		public ActionResult Test_2([FromBody] TestClass searchModel)
+		public ActionResult Test_1([FromBody] TestModel testModel)
 		{
 			var sanitizer = new HtmlSanitizer();
-			searchModel.Name = sanitizer.Sanitize(searchModel.Name);
-			return Json(searchModel);
+			testModel.Name = sanitizer.Sanitize(testModel.Name);
+			return Json(testModel);
 		}
 
-		//[HttpPost]
-		//[SanitizeInput]
-		//public ActionResult Test_3([FromBody] TestClass searchModel)
-		//{
-		//	return Json(searchModel);
-		//}
+		// Recommended fix (NOT recognized by Checkmarx...):
+		[HttpPost]
+		[SanitizeInput]
+		public ActionResult Test_2([FromBody] TestModel testModel)
+		{
+			return Json(testModel);
+		}
 	}
 }
