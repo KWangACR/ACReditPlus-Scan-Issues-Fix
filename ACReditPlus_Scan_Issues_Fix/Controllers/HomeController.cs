@@ -20,7 +20,7 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+			return View(new ApplicationSummaryStepModel { });
 		}
 
 		public IActionResult Privacy()

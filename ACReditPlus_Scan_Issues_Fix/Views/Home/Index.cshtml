@@ -1,12 +1,12 @@
-﻿@model ACReditPlus_Scan_Issues_Fix.Models.TestModel
+﻿@model ACReditPlus_Scan_Issues_Fix.Models.ApplicationSummaryStepModel
 
 @{
     ViewData["Title"] = "Home Page";
+    string headerText = Model.HeaderText;
 }
 
 <div class="text-center">
-
-    <h1>@Html.Raw(Model.Name)</h1>
+    <h1>@Html.Raw(headerText)</h1>
 
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>

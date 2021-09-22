@@ -18,21 +18,21 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 			return View();
 		}
 
-		// Dirty fix (accepted by Checkmarx):
-		[HttpPost]
-		public ActionResult Test_1([FromBody] TestModel testModel)
-		{
-			var sanitizer = new HtmlSanitizer();
-			testModel.Name = sanitizer.Sanitize(testModel.Name);
-			return Json(testModel);
-		}
+		//// Dirty fix (accepted by Checkmarx):
+		//[HttpPost]
+		//public ActionResult Test_1([FromBody] TestModel testModel)
+		//{
+		//	var sanitizer = new HtmlSanitizer();
+		//	testModel.Name = sanitizer.Sanitize(testModel.Name);
+		//	return Json(testModel);
+		//}
 
-		// Recommended fix (NOT recognized by Checkmarx...):
-		[HttpPost]
-		[SanitizeInput]
-		public ActionResult Test_2([FromBody] TestModel testModel)
-		{
-			return Json(testModel);
-		}
+		//// Recommended fix (NOT recognized by Checkmarx...):
+		//[HttpPost]
+		//[SanitizeInput]
+		//public ActionResult Test_2([FromBody] TestModel testModel)
+		//{
+		//	return Json(testModel);
+		//}
 	}
 }
