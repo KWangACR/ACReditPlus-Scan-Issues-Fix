@@ -19,7 +19,7 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 
 		public TestController(IConfiguration configuration)
 		{
-			ACREDIT_LEGACY_DB_CONN_STRING = configuration.GetConnectionString("ACREDIT_LEGACY_DB_CONNECTION_STRING");
+			ACREDIT_LEGACY_DB_CONN_STRING = configuration.GetConnectionString("NON_EXISTING_DB_CONNECTION_STRING");
 		}
 
 		public IActionResult Index()
