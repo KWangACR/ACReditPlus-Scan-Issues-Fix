@@ -3,12 +3,11 @@
 
 @{
 	ViewData["Title"] = "Home Page";
-
-	string headerText = HttpUtility.HtmlEncode(Model.HeaderText);
 }
 
 <div class="text-center">
-    <h1>@Html.Raw(headerText)</h1>
+    @*<h1>@Html.Raw(HttpUtility.HtmlDecode(headerText))</h1>*@
+	<h1>@Html.Raw(HttpUtility.HtmlDecode(Model.HeaderText))</h1>
 
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>

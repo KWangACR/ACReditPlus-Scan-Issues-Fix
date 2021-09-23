@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ACReditPlus_Scan_Issues_Fix.Models
 {
@@ -16,8 +17,9 @@ namespace ACReditPlus_Scan_Issues_Fix.Models
 		{
 			get
 			{
-				//return "Step: <b>Step Content</b>";
-				return "Step: <script>alert('You are hacked!')</script>";
+				//return "Step: <script>alert('You are hacked!')</script>";
+				return HttpUtility.HtmlEncode("Bad link: & <IMG SRC=javascript:alert('XSS')>");
+				//return "Styled text: <b>bold</b>";
 			}
 		}
 	}
