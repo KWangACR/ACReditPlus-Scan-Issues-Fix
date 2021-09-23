@@ -8,14 +8,25 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ACReditPlus_Scan_Issues_Fix.ActionFilters;
 using ACReditPlus_Scan_Issues_Fix.Models;
+using System.Data.SqlClient;
 
 namespace ACReditPlus_Scan_Issues_Fix.Controllers
 {
 	public class TestController : Controller
 	{
+		private readonly string ACREDIT_LEGACY_DB_CONN_STRING = "Server=(localdb)\\Kevin_LocalDB;Database=CICE_Local;User Id=cice_local_user;Password=yQuFQCdEBzJoiM6rf9ItnDQ8ESGTKrvd";
+
 		public IActionResult Index()
 		{
 			return View();
+		}
+
+		public void DbConnection()
+		{
+			using (SqlConnection conn = new SqlConnection(ACREDIT_LEGACY_DB_CONN_STRING))
+			{
+				
+			}
 		}
 
 		//// Dirty fix (accepted by Checkmarx):
