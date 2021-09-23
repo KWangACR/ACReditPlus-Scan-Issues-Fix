@@ -17,9 +17,7 @@ namespace ACReditPlus_Scan_Issues_Fix.Models
 		{
 			get
 			{
-				//return "Step: <script>alert('You are hacked!')</script>";
-				return HttpUtility.HtmlEncode("Bad link: & <IMG SRC=javascript:alert('XSS')>");
-				//return "Styled text: <b>bold</b>";
+				return $"Step: <b>{HttpUtility.HtmlEncode("some bold content")}</b>";
 			}
 		}
 	}
