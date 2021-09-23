@@ -9,12 +9,18 @@ using Newtonsoft.Json;
 using ACReditPlus_Scan_Issues_Fix.ActionFilters;
 using ACReditPlus_Scan_Issues_Fix.Models;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
 namespace ACReditPlus_Scan_Issues_Fix.Controllers
 {
 	public class TestController : Controller
 	{
-		private readonly string ACREDIT_LEGACY_DB_CONN_STRING = "Server=(localdb)\\Kevin_LocalDB;Database=CICE_Local;User Id=cice_local_user;Password=yQuFQCdEBzJoiM6rf9ItnDQ8ESGTKrvd";
+		private readonly string ACREDIT_LEGACY_DB_CONN_STRING;
+
+		public TestController(IConfiguration configuration)
+		{
+			ACREDIT_LEGACY_DB_CONN_STRING = configuration.GetConnectionString("ACReditEntityContext");
+		}
 
 		public IActionResult Index()
 		{
