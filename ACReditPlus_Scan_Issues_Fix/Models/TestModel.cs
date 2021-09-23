@@ -16,7 +16,8 @@ namespace ACReditPlus_Scan_Issues_Fix.Models
 		{
 			get
 			{
-				return "Step: <b>Step Content</b>";
+				//return "Step: <b>Step Content</b>";
+				return "Step: <script>alert('You are hacked!')</script>";
 			}
 		}
 	}

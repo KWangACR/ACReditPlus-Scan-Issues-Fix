@@ -1,11 +1,10 @@
-﻿@using Ganss.XSS;
+﻿@using System.Web;
 @model ACReditPlus_Scan_Issues_Fix.Models.ApplicationSummaryStepModel
 
 @{
 	ViewData["Title"] = "Home Page";
 
-	var sanitizer = new HtmlSanitizer();
-	string headerText = sanitizer.Sanitize(Model.HeaderText);
+	string headerText = HttpUtility.HtmlEncode(Model.HeaderText);
 }
 
 <div class="text-center">
