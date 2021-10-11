@@ -31,7 +31,9 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		{
 			using (SqlConnection conn = new SqlConnection(ACREDIT_LEGACY_DB_CONN_STRING))
 			{
-				
+				conn.Open();
+
+				conn.Close();
 			}
 		}
 
