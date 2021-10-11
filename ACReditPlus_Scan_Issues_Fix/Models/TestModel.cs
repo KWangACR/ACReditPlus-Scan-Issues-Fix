@@ -8,7 +8,7 @@ namespace ACReditPlus_Scan_Issues_Fix.Models
 {
 	public class TestModel
 	{
-		public string Name => "Step: <b>Step Content</b>";
+		public string Name => HttpUtility.HtmlEncode("Step: <b>Step Content</b>");
 	}
 
 	public class ApplicationSummaryStepModel
