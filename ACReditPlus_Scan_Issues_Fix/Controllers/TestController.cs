@@ -30,7 +30,7 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 
 		public void DbConnection()
 		{
-			using (SqlConnection conn = new SqlConnection($"{ACREDIT_LEGACY_DB_CONN_STRING} Some random text;"))
+			using (SqlConnection conn = new SqlConnection($"{ACREDIT_LEGACY_DB_CONN_STRING} Column Encryption Setting=enabled;"))
 			{
 				conn.Open();
 
