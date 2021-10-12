@@ -9,6 +9,8 @@
     <h1>@Html.Raw(Model.HeaderText)</h1>
 	@*<h1>@Html.Raw(HttpUtility.HtmlDecode(Model.HeaderText))</h1>*@
 
+    @Json.Serialize(Model).ToString()
+
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

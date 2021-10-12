@@ -10,6 +10,7 @@ using ACReditPlus_Scan_Issues_Fix.ActionFilters;
 using ACReditPlus_Scan_Issues_Fix.Models;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using ACReditPlus_Scan_Issues_Fix.Helpers;
 
 namespace ACReditPlus_Scan_Issues_Fix.Controllers
 {
@@ -29,7 +30,7 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 
 		public void DbConnection()
 		{
-			using (SqlConnection conn = new SqlConnection($"{ACREDIT_LEGACY_DB_CONN_STRING} Column Encryption Setting=enabled;"))
+			using (SqlConnection conn = new SqlConnection(ACREDIT_LEGACY_DB_CONN_STRING.DbConnStringEnableColumnEncryption()))
 			{
 				conn.Open();
 
