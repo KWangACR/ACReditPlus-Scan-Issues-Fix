@@ -49,17 +49,16 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 
 		// Recommended fix (NOT recognized by Checkmarx...):
 		[HttpPost]
-		[SanitizeInput]
+		//[SanitizeInput]
 		public ActionResult Test_2([FromBody] TestModel testModel)
 		{
-			try
+			var properties = testModel.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(string));
+			var sanitizer = new HtmlSanitizer();
+			foreach (var propInfo in properties)
 			{
-				return Json(testModel);
+				propInfo.SetValue(testModel, sanitizer.Sanitize(propInfo.GetValue(testModel) as string));
 			}
-			catch (Exception)
-			{
-				throw;
-			}
+			return Json(testModel);
 		}
 	}
 }
