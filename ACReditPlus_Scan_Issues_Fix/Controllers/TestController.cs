@@ -52,7 +52,14 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		[SanitizeInput]
 		public ActionResult Test_2([FromBody] TestModel testModel)
 		{
-			return Json(testModel);
+			try
+			{
+				return Json(testModel);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 		}
 	}
 }
