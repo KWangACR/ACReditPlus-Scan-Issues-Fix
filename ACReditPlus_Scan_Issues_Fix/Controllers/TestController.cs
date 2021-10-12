@@ -53,10 +53,10 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		public ActionResult Test_2([FromBody] TestModel testModel)
 		{
 			var properties = testModel.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(string));
-			var sanitizer = new HtmlSanitizer();
+			// var sanitizer = new HtmlSanitizer();
 			foreach (var propInfo in properties)
 			{
-				propInfo.SetValue(testModel, sanitizer.Sanitize(propInfo.GetValue(testModel) as string));
+				propInfo.SetValue(testModel, HttpUtility.HtmlEncode(propInfo.GetValue(testModel) as string));
 			}
 			return Json(testModel);
 		}
