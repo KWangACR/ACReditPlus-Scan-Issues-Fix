@@ -21,8 +21,10 @@
 					height: 750,
 					width: 800,
 					position: { my: "top", at: "top+115", of: window },
+					open: function () {
+						$(this).load("https://www.google.com");
+					}
 				})
-				.load("https://www.google.com");
 		});
 	});
 </script>
