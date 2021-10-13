@@ -11,6 +11,7 @@ using ACReditPlus_Scan_Issues_Fix.Models;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ACReditPlus_Scan_Issues_Fix.Helpers;
+using System.Web.Helpers;
 
 namespace ACReditPlus_Scan_Issues_Fix.Controllers
 {
@@ -52,6 +53,8 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		//[SanitizeInput]
 		public ActionResult Test_2([FromBody] TestModel testModel)
 		{
+			AntiForgery.Validate();
+
 			var properties = testModel.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(string));
 			// var sanitizer = new HtmlSanitizer();
 			foreach (var propInfo in properties)

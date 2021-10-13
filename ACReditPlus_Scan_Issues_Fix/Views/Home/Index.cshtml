@@ -5,6 +5,28 @@
 	ViewData["Title"] = "Home Page";
 }
 
+<script type="text/javascript">
+	$(document).ready(function () {
+		$(".openUnitDialog").on("click", function (e) {
+			e.preventDefault();
+			$("<div></div>")
+				.addClass("dialog")
+				.attr("id", $(this).attr("data-dialog-id"))
+				.appendTo("body")
+				.dialog({
+					maxHeight: window.innerHeight * 0.75,
+					resizable: true,
+					close: function () { $(this).remove() },
+					modal: true,
+					height: 750,
+					width: 800,
+					position: { my: "top", at: "top+115", of: window },
+				})
+				.load(this.href);
+		});
+	});
+</script>
+
 <div class="text-center">
     <h1>@Html.Raw(Model.HeaderText)</h1>
 	@*<h1>@Html.Raw(HttpUtility.HtmlDecode(Model.HeaderText))</h1>*@
