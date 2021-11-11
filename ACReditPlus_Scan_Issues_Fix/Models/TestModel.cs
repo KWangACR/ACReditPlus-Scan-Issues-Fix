@@ -8,6 +8,7 @@ namespace ACReditPlus_Scan_Issues_Fix.Models
 {
 	public class TestModel
 	{
+		public int ModalityNumber { get; set; }
 		public string Name => HttpUtility.HtmlEncode("Step: <b>Step Content</b>");
 	}
 

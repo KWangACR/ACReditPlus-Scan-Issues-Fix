@@ -63,5 +63,14 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 			}
 			return Json(testModel);
 		}
+
+		[HttpPost]
+		public IActionResult Save([FromBody] TestModel testModel)
+		{
+			string key = "_" + testModel.ModalityNumber;
+			TestModel new_testModel = JsonConvert.DeserializeObject<TestModel>(key, new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace, TypeNameHandling = TypeNameHandling.Objects });
+			Console.WriteLine(new_testModel.Name);
+			return Json(new { ok = true });
+		}
 	}
 }
