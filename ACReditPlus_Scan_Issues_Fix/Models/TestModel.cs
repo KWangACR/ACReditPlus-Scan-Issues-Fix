@@ -12,6 +12,12 @@ namespace ACReditPlus_Scan_Issues_Fix.Models
 		public string Name => HttpUtility.HtmlEncode("Step: <b>Step Content</b>");
 	}
 
+	public class TestModel_2
+	{
+		public int ID { get; set; }
+		public string Name { get; set; }
+	}
+
 	public class ApplicationSummaryStepModel
 	{
 		public string HeaderText

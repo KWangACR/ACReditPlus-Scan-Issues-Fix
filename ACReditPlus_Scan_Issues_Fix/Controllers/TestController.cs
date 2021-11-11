@@ -68,7 +68,8 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		public IActionResult Save([FromBody] TestModel testModel)
 		{
 			string key = "_" + testModel.ModalityNumber;
-			TestModel new_testModel = JsonConvert.DeserializeObject<TestModel>(key, new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace, TypeNameHandling = TypeNameHandling.Objects });
+			String serialized = ConstStrings.REVIEWSHEET_MENU + key;
+			TestModel_2 new_testModel = JsonConvert.DeserializeObject<TestModel_2>(serialized, new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace, TypeNameHandling = TypeNameHandling.Objects });
 			Console.WriteLine(new_testModel.Name);
 			return Json(new { ok = true });
 		}
