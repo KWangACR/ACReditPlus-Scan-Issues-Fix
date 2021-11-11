@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ACReditPlus_Scan_Issues_Fix.Helpers;
 using System.Web.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace ACReditPlus_Scan_Issues_Fix.Controllers
 {
@@ -69,7 +70,8 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		{
 			string key = "_" + testModel.ModalityNumber;
 			String serialized = ConstStrings.REVIEWSHEET_MENU + key;
-			TestModel_2 new_testModel = JsonConvert.DeserializeObject<TestModel_2>(serialized, new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace, TypeNameHandling = TypeNameHandling.Objects });
+			string item = HttpContext.Session.GetString(serialized);
+			TestModel_2 new_testModel = JsonConvert.DeserializeObject<TestModel_2>(item, new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace, TypeNameHandling = TypeNameHandling.Objects });
 			Console.WriteLine(new_testModel.Name);
 			return Json(new { ok = true });
 		}
