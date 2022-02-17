@@ -1,0 +1,315 @@
+﻿<script>
+    var sortAttributeNames = {
+        facilityId: "FacilityId",
+        modalityIdForSorting: "ModalityIdForSorting",
+        addressTo: "AddressTo",
+        facilityName: "FacilityName",
+        modalityName: "ModalityName",
+        modalityStatus: "ModalityStatus",
+        state: "State"
+    }
+    $(document).ready(function () {
+        $("input[type=text]").attr('data-search-field', true);
+        ResetSateListSelection();
+        $('.Modality').hide();
+        AllowCommaSeparatedNumber('Facility');
+        AllowCommaSeparatedNumber('Modality');
+        ShowAndHideModality(sortAttributeNames);
+
+        $(document).on('click', '#btnSearch', function (e) {
+            e.preventDefault();
+            $('#@Html.IdFor(m => m.SortPageAttribute.PageIndex)').val(1);
+            var requestType = "NewSearch";
+            if ($('#SelectedPrintLabelTypeId').val() == 2)
+            {
+                $("#listBoxSelected_ModalityLists option").prop("selected", "selected");
+            }
+
+            $("#listBoxSelected_StatesList option").prop("selected", "selected");
+
+            if (ValidateSearchCriteria()) {
+                var searchModel = CreateJsondata(requestType);
+                var baseUrl = '@Url.Content("~/")';
+                var url = baseUrl + 'Admin/AddressLabel/DisplayFilteredFacilityAddressLabels';
+                GetSearchItemsList("POST", url, searchModel);
+            }
+        });
+
+        $("#btnReset").click(function () {
+            if ($('#SelectedPrintLabelTypeId').val() == 2) {
+                $("#listBoxSelected_ModalityLists option").each(function () {
+                    $(this).remove();
+                    $("#listBoxAvailable_ModalityLists").append($(this));
+                });
+            }
+            $('#SelectedPrintLabelTypeId').val(1);
+            $('#SelectedAddressTypeId').val(1);
+            $('#FacilitySelectedAddressToId').val('');
+            $('#ModalitySelectedAddressToId').val('');
+            $('#SelectedModalityStatusId').val('');
+            $('#Facility').val('');
+            $('#Modality').val('');
+            $("#listBoxSelected_StatesList option").each(function () {
+                $(this).remove();
+                $("#listBoxAvailable_StatesList").append($(this));
+            });
+            ShowAndHideModality();
+            var searchModel = CreateJsondata();
+            var baseUrl = '@Url.Content("~/")';
+            var url = baseUrl + 'Admin/AddressLabel/DisplayFilteredFacilityAddressLabels';
+            GetSearchItemsList("POST", url, searchModel);
+
+        });
+
+        $("#btnAssign_StatesList").click(function () {
+            var baseUrl = '@Url.Content("~/")';
+            var url = baseUrl + 'Admin/AddressLabel/SortStates';
+            AssignStateList(baseUrl, url);
+        });
+        $("#btnUnAssign_StatesList").click(function () {
+            var baseUrl = '@Url.Content("~/")';
+            var url = baseUrl + 'Admin/AddressLabel/SortStates';
+            UnAssignStateList(baseUrl, url);
+        });
+
+    });
+
+
+    function ShowAndHideModality()
+    {
+        if ($('#SelectedPrintLabelTypeId').val() == 2) {
+            $('.Facility').hide();
+            $('.Modality').show();
+            $('.FacilityLabelAddressTo').hide();
+            $('.ModalityLabelAddressTo').show();
+            $('#@Html.IdFor(m => m.SortPageAttribute.SortByName)').val(sortAttributeNames.modalityName);
+        }
+        else {
+            $('.Facility').show();
+            $('.Modality').hide();
+            $('.FacilityLabelAddressTo').show();
+            $('.ModalityLabelAddressTo').hide();
+            $('#@Html.IdFor(m => m.SortPageAttribute.SortByName)').val(sortAttributeNames.facilityName);
+        }
+        $('#@Html.IdFor(m => m.SortPageAttribute.SortDirection)').val("ASC");
+    }
+
+
+    function CreateJsondata(requestType) {
+
+        var sortPageModel = {
+            PageIndex: $('#@Html.IdFor(m => m.SortPageAttribute.PageIndex)').val(),
+            PageSize: $('#@Html.IdFor(m => m.SortPageAttribute.PageSize)').val(),
+            SortByName: $('#@Html.IdFor(m => m.SortPageAttribute.SortByName)').val(),
+            SortDirection: $('#@Html.IdFor(m => m.SortPageAttribute.SortDirection)').val(),
+        };
+        var selectedStateValues = new Array();
+        var selectedModalityValues = new Array();
+        selectedStateValues = $('#listBoxSelected_StatesList option:selected').map(function () {
+            return this.value;
+        }).get();
+        if ($('#SelectedPrintLabelTypeId').val() == 2) {
+            selectedModalityValues = $('#listBoxSelected_ModalityLists option:selected').map(function () {
+                return this.value;
+            }).get();
+            var modalitySearchModel = {
+                UniqueBrowserIdentifier: $('#@Html.IdFor(m => m.UniqueBrowserIdentifier)').val(),
+                SelectedModalities: selectedModalityValues,
+                SelectedStates: selectedStateValues,
+                SelectedPrintLabelTypeId: $('#SelectedPrintLabelTypeId').val(),
+                SelectedAddressTypeId: $('#SelectedAddressTypeId').val(),
+                SelectedAddressToId: $('#ModalitySelectedAddressToId').val(),
+                SelectedModalityStatusId: $('#SelectedModalityStatusId').val(),
+                Facility: $('#Facility').val(),
+                Modality: $('#Modality').val(),
+                SortPageAttribute: sortPageModel,
+                RequestType: requestType
+            };
+            return modalitySearchModel;
+        }
+        else
+        {
+            var searchModel = {
+                UniqueBrowserIdentifier: $('#@Html.IdFor(m => m.UniqueBrowserIdentifier)').val(),
+                SelectedStates: selectedStateValues,
+                SelectedPrintLabelTypeId: $('#SelectedPrintLabelTypeId').val(),
+                SelectedAddressTypeId: $('#SelectedAddressTypeId').val(),
+                SelectedAddressToId: $('#FacilitySelectedAddressToId').val(),
+                Facility: $('#Facility').val(),
+                Modality: $('#Modality').val(),
+                SortPageAttribute: sortPageModel,
+                RequestType: requestType
+            };
+            return searchModel;
+        }
+    }
+
+    function ValidateSearchCriteria() {
+
+        $(".FormError").empty();
+        var result = true;
+        if ($('#SelectedPrintLabelTypeId').val() == 2) {
+
+            if ($('#listBoxSelected_ModalityLists').val() == null) {
+
+                $(".FormError").show();
+                $(".FormError").append('<div data-valmsg-summary="true" class="validation-summary-errors"><span>Please correct the errors and try again.</span><ul><li>Please complete "Modality" field</li></ul></div>');
+                return false;
+            }
+            else if ($('#listBoxSelected_ModalityLists').val() != null){
+                var modality = $('#Modality').val();
+                var separateByCommaModality = modality.split(",");
+
+                if ($('#Modality').val() != null) {
+                    for (i = 0; i < separateByCommaModality.length; i++) {
+                        var seperateLetterModality = separateByCommaModality[i].split("");
+                        for (j = 0; j < seperateLetterModality.length; j++) {
+                            if (separateByCommaModality[i].trim().length > 6 || seperateLetterModality[j].match("^[^0-9 \,]+$")) {
+                                $(".FormError").empty().show();
+                                $(".FormError").append('<div data-valmsg-summary="true" class="validation-summary-errors"><span>Please correct the errors and try again.</span><ul><li>Value entered into "Modality##" field is incorrect due to format (#####, ####, ### ....).</li></ul></div>');
+                                $("#gridList").empty();
+
+                                return false;
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if ($('#SelectedPrintLabelTypeId').val() == 1) {
+            var facility = $('#Facility').val();
+            var separateByCommaFacility = facility.split(",");
+            if ($('#Facility').val() != null ) {
+                for (i = 0; i < separateByCommaFacility.length; i++) {
+                    var separateLetterFacility = separateByCommaFacility[i].split("");
+                    for (j = 0; j < separateLetterFacility.length; j++)
+                    {
+                        if (separateByCommaFacility[i].trim().length > 6 || separateLetterFacility[j].match("^[^0-9 \,]+$")) {
+                            $("#gridList").empty();
+
+                            $(".FormError").empty().show();
+                            $(".FormError").append('<div data-valmsg-summary="true" class="validation-summary-errors"><span>Please correct the errors and try again.</span><ul><li>Value entered into "Facility #" field is incorrect due to format (#####, ####, ### ....).</li></ul></div>');
+                            return false;
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    function GetSearchItemsList(methodtype, linkUrl, tdata) {
+        $.ajax({
+            type: methodtype,
+            url: linkUrl,
+            cache: false,
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(tdata),
+            success: function (data) {
+                if ($(data).toArray().length == 1) {
+                    $("#gridFacilityAddressLableModel").html('<table id="noResultMessage"  cellspacing="0" cellpadding="0" rules="all" border="1"  style="width:100%;border-collapse:collapse; text-align:center;"><tbody><tr><td colspan="5"><span id="noResultMessageSpan">There are no facilities to display. </span></td></tr></tbody></table>');
+                    SetSortIconsForAddressLabels();
+                    $('#@Html.IdFor(m => m.SelectAllChangedValue)').val(null);
+                }
+                else {
+                    $("#gridFacilityAddressLableModel").html(data);
+                    TableSorter_SetupListPaging('#gridList', null, null, null);
+                    SetSortIconsForAddressLabels();
+                    $('#@Html.IdFor(m => m.SelectAllChangedValue)').val(null);
+                }
+            },
+            error: function (req, status, error) {
+                if (req != null && req.status != 401) {
+                    //No Point of displaying this message to user
+                    //alert("Error occured on ajax call : " + req.status + " : " + req.statusText);
+                }
+            }
+        });
+    }
+    function SetSortIconsForAddressLabels() {
+        var requestType = "SortOrPage";
+        var searchModel = CreateJsondata(requestType);
+        var currentSortByName = searchModel.SortPageAttribute.SortByName;
+        var currentSortDirection = searchModel.SortPageAttribute.SortDirection;
+        var sortImageCSS = "SortDescending";
+        if (currentSortDirection == "ASC") {
+            sortImageCSS = "SortAscending";
+        }
+        $("#" + currentSortByName).attr("class", sortImageCSS);
+    }
+
+</script>
+
+<div id="SearchCriteriaBlock" style="width: 100%; float: left;  margin-bottom:5pt">
+	@Html.Hidden("hdnSearchCriteria", "", new { id = "hdnSearchCriteria" })
+	@Html.HiddenFor(m => m.SortPageAttribute.PageIndex, new { @class = "PageIndex" })
+	@Html.HiddenFor(m => m.SortPageAttribute.PageSize, new { @class = "PageSize" })
+	@Html.HiddenFor(m => m.SortPageAttribute.SortDirection, new { @class = "SortDirection" })
+	@Html.HiddenFor(m => m.SortPageAttribute.SortByName, new { @class = "SortByName" })
+	@Html.HiddenFor(m => m.UniqueBrowserIdentifier, new { @class = "UniqueBrowserIdentifier" })
+	@Html.HiddenFor(m => m.SelectAllChangedValue, new { @class = "SelectAllChangedValue" })
+</div>
+<div aplus="ap-form-item">
+	<table class="w-100">
+		<tr>
+			<td style="width: 120px;">@Html.LabelFor(m => m.SelectedPrintLabelTypeId, new { @class = "optional font-weight-bold" })</td>
+			<td style="width: 160px;">@Html.DropDownListFor(m => m.SelectedPrintLabelTypeId, Model.PrintLabelTypeList, htmlAttributes: new { style = "min-width:50pt;", id = "SelectedPrintLabelTypeId", onchange = "ShowAndHideModality()" })</td>
+			<td style="width: 120px;" class="Facility">@Html.LabelFor(m => m.Facility, new { @class = "optional font-weight-bold" })</td>
+			<td style="width: 140px;" class="Facility">
+				@Html.TextBoxFor(m => m.Facility, htmlAttributes: new { style = "width:100px;", id = "Facility" })
+			</td>
+
+			<td style="width: 120px;" class="Modality">@Html.LabelFor(m => m.Modality, new { @class = "optional font-weight-bold" })</td>
+			<td style="width: 140px;" class="Modality">
+				@Html.TextBoxFor(m => m.Modality, htmlAttributes: new { style = "width:100px;", id = "Modality" })
+			</td>
+
+			<td style="width: 140px;" class="Modality">@Html.LabelFor(m => m.SelectedModalityStatusId, new { @class = "optional font-weight-bold" })</td>
+			<td style="width: 120px;" class="Modality">@Html.DropDownListFor(m => m.SelectedModalityStatusId, Model.ModalityStatusList, htmlAttributes: new { style = "min-width:50pt;", id = "SelectedModalityStatusId" })</td>
+
+			<td style="width: 140px;">@Html.LabelFor(m => m.SelectedAddressTypeId, new { @class = "optional font-weight-bold" })</td>
+			<td style="width: 170px;">@Html.DropDownListFor(m => m.SelectedAddressTypeId, Model.AddressTypeList, htmlAttributes: new { style = "min-width:50pt;", id = "SelectedAddressTypeId" })</td>
+			<td style="width: 140px; font-weight: bold">@Html.LabelFor(m => m.SelectedAddressToId, new { @class = "optional font-weight-bold" })</td>
+			<td>
+				@Html.DropDownListFor(m => m.SelectedAddressToId, Model.FacilityLabelAddressToList, htmlAttributes: new { style = "min-width:50pt;", id = "FacilitySelectedAddressToId", @class = "FacilityLabelAddressTo" })
+				@Html.DropDownListFor(m => m.SelectedAddressToId, Model.ModalityLabelAddressToList, htmlAttributes: new { style = "min-width:50pt;", id = "ModalitySelectedAddressToId", @class = "ModalityLabelAddressTo" })
+			</td>
+		</tr>
+		<tr>
+			<td colspan="8" class="pt-3">
+				<div class="form-group row">
+					<div class="col-sm-5 mr-5">
+						<div> @Html.SwitchListFor(m => m.AvailableStates, Model.StatesList, m => m.SelectedStates, Model.SelectedStatesList, "StatesList", "States:", "Selected States:", "", false)</div>
+					</div>
+					<div class="col-sm-1">
+
+					</div>
+					<div class="col-sm-5">
+						<div class="Modality"> @Html.SwitchListFor(m => m.AvailableModalities, Model.ModalityList, m => m.SelectedModalities, Model.SelectedModalityList, "ModalityLists", "Modalities:", "Selected Modalities:", "", false)</div>
+					</div>
+					<div class="col-sm-1">
+
+					</div>
+				</div>
+
+
+			</td>
+		<tr>
+			<td colspan="8" class="p-3">
+				<input acr="btn" type="submit" value=" Search " name="btnSearch" id="btnSearch" class="Bottons" />
+				<input acr="btn" type="button" value=" Reset " name="btnReset" id="btnReset" class="Bottons" />
+			</td>
+		</tr>
+	</table>
+
+
+	<partial name="~/Views/Shared/APlus/Common/Universal/_FormInfoPartial.cshtml" model='new ACReditApp.Web.Models.Common.Universal.FormInfoViewModel() { DisplayMessage = "Click Search button to show data." }' />
+</div>
+<script src="~/lib/APlus/Pages/Common/SwitchList/SwitchList.js"></script>
