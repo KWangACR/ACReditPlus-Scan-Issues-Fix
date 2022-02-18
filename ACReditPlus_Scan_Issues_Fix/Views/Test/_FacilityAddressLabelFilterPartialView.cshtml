@@ -219,7 +219,9 @@
                     $('#@Html.IdFor(m => m.SelectAllChangedValue)').val(null);
                 }
                 else {
-                    $("#gridFacilityAddressLableModel").html(data);
+                    /*$("#gridFacilityAddressLableModel").html(data);*/
+                    $("#gridFacilityAddressLableModel").html(JSON.parse(data));
+
                     TableSorter_SetupListPaging('#gridList', null, null, null);
                     SetSortIconsForAddressLabels();
                     $('#@Html.IdFor(m => m.SelectAllChangedValue)').val(null);
