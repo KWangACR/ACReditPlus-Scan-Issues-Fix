@@ -219,9 +219,9 @@
                     $('#@Html.IdFor(m => m.SelectAllChangedValue)').val(null);
                 }
                 else {
-                    /*$("#gridFacilityAddressLableModel").html(data);*/
+                    $("#gridFacilityAddressLableModel").html('<table>' + data.TableContent + '</table>');
                     // $("#gridFacilityAddressLableModel").html(JSON.parse(data));
-                    $("#gridFacilityAddressLableModel").append(data);
+                    /*$("#gridFacilityAddressLableModel").append(data);*/
 
 
                     TableSorter_SetupListPaging('#gridList', null, null, null);
