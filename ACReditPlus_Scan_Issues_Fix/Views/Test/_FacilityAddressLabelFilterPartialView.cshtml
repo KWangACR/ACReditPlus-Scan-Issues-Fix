@@ -1,4 +1,6 @@
 ﻿<script>
+    import DOMPurify from 'dompurify';
+
     var sortAttributeNames = {
         facilityId: "FacilityId",
         modalityIdForSorting: "ModalityIdForSorting",
@@ -219,9 +221,10 @@
                     $('#@Html.IdFor(m => m.SelectAllChangedValue)').val(null);
                 }
                 else {
-                    $("#gridFacilityAddressLableModel").html('<table>' + data.TableContent + '</table>');
+                    // $("#gridFacilityAddressLableModel").html('<table>' + data.TableContent + '</table>');
                     // $("#gridFacilityAddressLableModel").html(JSON.parse(data));
                     /*$("#gridFacilityAddressLableModel").append(data);*/
+					$("#gridFacilityAddressLableModel").html(DOMPurify.sanitize(data));
 
 
                     TableSorter_SetupListPaging('#gridList', null, null, null);
