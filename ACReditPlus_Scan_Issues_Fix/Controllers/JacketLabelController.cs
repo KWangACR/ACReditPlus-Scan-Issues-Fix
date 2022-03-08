@@ -18,7 +18,8 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
                 string fileFullPath = this.jacketLabelWorklistHelper.GetJacketLabelPDFFileByteInfo(examHasFormDocId);
                 // Read The File Bytes
                 //byte[] fileBytes = System.IO.File.ReadAllBytes(fileFullPath.GetValidFilename());
-                byte[] fileBytes = System.IO.File.ReadAllBytes(Path.Combine("userFiles", Path.GetFileName(fileFullPath)));
+                //byte[] fileBytes = System.IO.File.ReadAllBytes(Path.Combine("userFiles", Path.GetFileName(fileFullPath)));
+                byte[] fileBytes = System.IO.File.ReadAllBytes(Path.Combine("userFiles", "filePath.txt"));
                 // Get the File Info from The Path 
                 System.IO.FileInfo fileInfo = new System.IO.FileInfo(fileFullPath);
                 // Return the File Bytes with File Name so it can be Downloaded.
