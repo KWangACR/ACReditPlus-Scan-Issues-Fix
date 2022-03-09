@@ -43,10 +43,26 @@ namespace ACReditPlus_Scan_Issues_Fix.Helpers
                 //WebProxy proxy = new WebProxy(new Uri("http://url:port#"));
                 //req.Proxy = proxy;
                 //Send the request to PayPal and get the response
-                StreamWriter streamOut = new StreamWriter(req.GetRequestStream(),
-                    Encoding.ASCII);
-                streamOut.Write(strRequest);
-                streamOut.Close();
+
+                StreamWriter streamOut = null;
+                try
+				{
+                    streamOut = new StreamWriter(req.GetRequestStream(), Encoding.ASCII);
+                    streamOut.Write(strRequest);
+                }
+				catch (Exception ex)
+				{
+					throw ex;
+				}
+				finally
+				{
+                    streamOut.Close();
+                }
+
+                
+                
+
+
                 StreamReader streamIn = new StreamReader(req.GetResponse().GetResponseStream());
                 string strResponse = streamIn.ReadToEnd();
                 streamIn.Close();
