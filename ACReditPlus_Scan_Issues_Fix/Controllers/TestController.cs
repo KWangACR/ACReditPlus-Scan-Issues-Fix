@@ -80,7 +80,7 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		[HttpPost]
 		public void FlattenXFAForm(string dstFilePath)
 		{
-			using (var dstStream = System.IO.File.Create(dstFilePath.GetValidFilename()))
+			using (var dstStream = System.IO.File.Create(dstFilePath.GetValidPath()))
 			{
 				
 			}
