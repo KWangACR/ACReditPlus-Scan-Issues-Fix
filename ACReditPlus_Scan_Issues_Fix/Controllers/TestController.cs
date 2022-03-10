@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using ACReditPlus_Scan_Issues_Fix.Helpers;
 using System.Web.Helpers;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace ACReditPlus_Scan_Issues_Fix.Controllers
 {
@@ -74,6 +75,15 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 			TestModel_2 new_testModel = JsonConvert.DeserializeObject<TestModel_2>(item, new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace, TypeNameHandling = TypeNameHandling.Objects });
 			Console.WriteLine(new_testModel.Name);
 			return Json(new { ok = true });
+		}
+
+		[HttpPost]
+		public void FlattenXFAForm(string dstFilePath)
+		{
+			using (var dstStream = System.IO.File.Create(dstFilePath))
+			{
+				
+			}
 		}
 	}
 }
