@@ -62,10 +62,11 @@ namespace ACReditPlus_Scan_Issues_Fix.Helpers
                 
                 
 
-
-                StreamReader streamIn = new StreamReader(req.GetResponse().GetResponseStream());
-                string strResponse = streamIn.ReadToEnd();
-                streamIn.Close();
+                
+                using(StreamReader streamIn = new StreamReader(req.GetResponse().GetResponseStream()))
+				{
+                    string strResponse = streamIn.ReadToEnd();
+                }
             }
             catch (Exception exc)
             {
