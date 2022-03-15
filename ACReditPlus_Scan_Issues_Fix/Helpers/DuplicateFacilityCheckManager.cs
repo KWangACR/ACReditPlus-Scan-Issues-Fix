@@ -28,9 +28,11 @@ namespace ACReditPlus_Scan_Issues_Fix.Helpers
 
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.ExecuteNonQuery();
-                        SqlDataAdapter da = new SqlDataAdapter(cmd);
-
-                        da.Fill(dsOutput);
+                        
+                        using(SqlDataAdapter da = new SqlDataAdapter(cmd))
+						{
+                            da.Fill(dsOutput);
+                        }
                     }
                     
                     conn.Close();
