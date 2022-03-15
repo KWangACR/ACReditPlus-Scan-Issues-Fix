@@ -18,19 +18,21 @@ namespace ACReditPlus_Scan_Issues_Fix.Helpers
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("SYS__Common__P__CHECK_FACILITY_DUPLICATE", conn);
+                    using(SqlCommand cmd = new SqlCommand("SYS__Common__P__CHECK_FACILITY_DUPLICATE", conn))
+					{
+                        cmd.Parameters.Add("@STREET_ADDRESS1", SqlDbType.NVarChar, 255);
+                        cmd.Parameters["@STREET_ADDRESS1"].Value = facilityAddressVerificationParameter.StreetAddress;
 
-                    cmd.Parameters.Add("@STREET_ADDRESS1", SqlDbType.NVarChar, 255);
-                    cmd.Parameters["@STREET_ADDRESS1"].Value = facilityAddressVerificationParameter.StreetAddress;
+                        cmd.Parameters.Add("@ZIP_CODE", SqlDbType.NVarChar, 20);
+                        cmd.Parameters["@ZIP_CODE"].Value = facilityAddressVerificationParameter.ZipCode;
 
-                    cmd.Parameters.Add("@ZIP_CODE", SqlDbType.NVarChar, 20);
-                    cmd.Parameters["@ZIP_CODE"].Value = facilityAddressVerificationParameter.ZipCode;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.ExecuteNonQuery();
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
 
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.ExecuteNonQuery();
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-
-                    da.Fill(dsOutput);
+                        da.Fill(dsOutput);
+                    }
+                    
                     conn.Close();
                 }
             }
