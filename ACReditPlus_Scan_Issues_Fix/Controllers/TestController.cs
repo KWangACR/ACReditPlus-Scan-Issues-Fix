@@ -69,6 +69,8 @@ namespace ACReditPlus_Scan_Issues_Fix.Controllers
 		[HttpPost]
 		public IActionResult Save([FromBody] TestModel testModel)
 		{
+			Directory.CreateDirectory(@"C:\MyWork\Documents\General");
+
 			string key = "_" + testModel.ModalityNumber;
 			String serialized = ConstStrings.REVIEWSHEET_MENU + key;
 			string item = HttpContext.Session.GetString(serialized);
